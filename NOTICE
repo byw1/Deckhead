@@ -1,0 +1,55 @@
+Deckhead
+Copyright (C) 2026 William Lawrence
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License along
+with this program. If not, see <https://www.gnu.org/licenses/>.
+
+
+DUAL LICENSING
+--------------
+
+The copyright holder dual-licenses this software. The public source, as
+distributed in this repository, is licensed under AGPL-3.0. Public forks remain
+open under those terms.
+
+The build distributed through the Apple App Store ships under a separate
+proprietary licence granted by the copyright holder. This resolves the known
+incompatibility between GPL-family terms and the Apple App Store distribution
+terms, under which Apple imposes usage rules that the AGPL does not permit a
+licensee to impose. Because the copyright holder owns the work, they may
+distribute it under other terms in parallel; that permission does not extend to
+third parties, who receive the software under AGPL-3.0 only.
+
+Contributions submitted to this repository are accepted under AGPL-3.0. A
+contributor licence agreement will be required before any third-party
+contribution can be included in a proprietary App Store build.
+
+
+TRADEMARKS
+----------
+
+The name "Deckhead", the app icon and the wordmark are not licensed under
+AGPL-3.0. See TRADEMARK.md.
+
+
+THIRD-PARTY COMPONENTS
+----------------------
+
+This software depends on open-source components, each governed by its own
+licence. Their licence texts are distributed with the packages in node_modules
+and are reproduced in the application's acknowledgements. Notable components:
+
+  React Native, React, Expo and Expo modules    MIT
+  Anton (typeface)                              SIL Open Font License 1.1
+
+Deck content bundled with this application is original work by the copyright
+holder and is covered by the AGPL-3.0 licence above.

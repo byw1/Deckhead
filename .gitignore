@@ -39,3 +39,32 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Brand assets. Not covered by the code licence — see TRADEMARK.md.
+# The exported PNGs in /assets are committed because the app will not build
+# without them. The editable sources and store artwork stay out.
+/brand/
+*.sketch
+*.fig
+*.afdesign
+*.afphoto
+*.ai
+*.psd
+/assets/icon-source.*
+/assets/wordmark.*
+/store/
+/screenshots/
+
+# Deck content that is not free-from-install. The spec makes every bundled
+# deck free, so nothing should land here in v1 — the rule exists so that a
+# future premium deck cannot be committed to the public repo by accident.
+/assets/decks/premium/
+
+# EAS local build artefacts and credentials
+/build/
+*.ipa
+*.aab
+*.apk
+credentials.json
+google-services.json
+GoogleService-Info.plist
