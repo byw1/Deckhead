@@ -1,22 +1,29 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Screen } from '@/ui/Screen';
+import { Text } from '@/ui/Text';
+import { space } from '@/ui/tokens';
 
 export default function Home() {
   return (
-    <View style={styles.screen}>
-      <Text style={styles.title}>Deckhead</Text>
-    </View>
+    <Screen style={styles.screen}>
+      <View style={styles.header}>
+        <Text card variant="display">
+          DECKHEAD
+        </Text>
+        <Text variant="body" tone="muted">
+          Phone on your forehead. Everyone else shouts clues.
+        </Text>
+      </View>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#14121A',
+    paddingHorizontal: space.lg,
   },
-  title: {
-    color: '#F5F2EC',
-    fontSize: 32,
+  header: {
+    gap: space.sm,
   },
 });
