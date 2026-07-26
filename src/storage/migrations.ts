@@ -64,6 +64,32 @@ export const migrations: readonly Migration[] = [
       CREATE INDEX decks_by_source ON decks (source, name);
     `,
   },
+  {
+    version: 2,
+    name: 'sessions',
+    /**
+     * Sessions are stored as a JSON document with a few columns lifted out for
+     * listing and for finding the one in progress.
+     *
+     * This is the opposite choice to decks, deliberately. A deck is queried
+     * across — card counts for every deck at once, search over card text, and
+     * per-card reordering — so it is normalised. A session is only ever read
+     * whole and written whole, and its shape (teams, rounds, results) would
+     * need four tables and four joins to reassemble something that is a few
+     * kilobytes of JSON.
+     */
+    up: `
+      CREATE TABLE sessions (
+        id           TEXT PRIMARY KEY NOT NULL,
+        createdAt    TEXT NOT NULL,
+        completedAt  TEXT,
+        data         TEXT NOT NULL
+      );
+
+      CREATE INDEX sessions_by_created ON sessions (createdAt DESC);
+      CREATE INDEX sessions_in_progress ON sessions (completedAt, createdAt DESC);
+    `,
+  },
 ];
 
 /**

@@ -211,6 +211,54 @@ describe('schema at version 1', () => {
   });
 });
 
+describe('upgrading a device that already has data', () => {
+  /**
+   * The guarantee the spec calls mandatory: a user's decks survive a schema
+   * change. Written against a real v1 database rather than a fresh one, so
+   * this fails if a future migration ever drops or rebuilds a table carelessly.
+   */
+  it('keeps existing decks and cards when new migrations run', async () => {
+    const db = createTestDriver();
+    try {
+      await db.execAsync(`${migrations[0]!.up}; PRAGMA user_version = 1;`);
+
+      db.raw.exec(`
+        INSERT INTO decks (id, schemaVersion, name, accentColor, source, createdAt, updatedAt)
+          VALUES ('dck_00000001', 1, 'Inside Jokes', '#FF3D6E', 'custom', '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z');
+        INSERT INTO cards (id, deckId, text, note, position)
+          VALUES ('crd_00000001', 'dck_00000001', 'The thing with the boat', NULL, 0);
+      `);
+
+      const applied = await migrate(db);
+      expect(applied).toEqual(migrations.slice(1).map((m) => m.version));
+      expect(db.userVersion()).toBe(LATEST_SCHEMA_VERSION);
+
+      const deck = db.raw.prepare('SELECT name FROM decks WHERE id = ?').get('dck_00000001');
+      expect(deck).toMatchObject({ name: 'Inside Jokes' });
+
+      const card = db.raw.prepare('SELECT text FROM cards WHERE deckId = ?').get('dck_00000001');
+      expect(card).toMatchObject({ text: 'The thing with the boat' });
+    } finally {
+      db.close();
+    }
+  });
+
+  it('adds the sessions table without touching deck tables', async () => {
+    const db = createTestDriver();
+    try {
+      await db.execAsync(`${migrations[0]!.up}; PRAGMA user_version = 1;`);
+      const before = db.columnNames('decks');
+
+      await migrate(db);
+
+      expect(db.tableNames()).toEqual(expect.arrayContaining(['cards', 'decks', 'sessions']));
+      expect(db.columnNames('decks')).toEqual(before);
+    } finally {
+      db.close();
+    }
+  });
+});
+
 describe('seenCardKey', () => {
   it('scopes a card to its deck', () => {
     expect(seenCardKey('dck_00000001', 'crd_00000001')).toBe('dck_00000001/crd_00000001');
