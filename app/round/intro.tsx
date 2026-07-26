@@ -1,8 +1,11 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { useRoundScreenMode } from '@/hooks/useRoundScreenMode';
+import { makeRoundId } from '@/game/ids';
+import { whoseTurn } from '@/game/session';
 import { useHaptics } from '@/hooks/useHaptics';
+import { useRoundScreenMode } from '@/hooks/useRoundScreenMode';
+import { useSessionStore } from '@/hooks/useSessionStore';
 import { color, font, space } from '@/ui/tokens';
 
 const COUNT_FROM = 3;
@@ -17,11 +20,20 @@ const TICK_MS = 800;
  */
 export default function RoundIntroScreen() {
   const router = useRouter();
-  const { playerName } = useLocalSearchParams<{ playerName?: string }>();
-  const [count, setCount] = useState(COUNT_FROM);
   const haptics = useHaptics();
 
+  const session = useSessionStore((s) => s.session);
+  const beginRound = useSessionStore((s) => s.beginRound);
+
+  const [count, setCount] = useState(COUNT_FROM);
+
   useRoundScreenMode({ landscape: true });
+
+  // Opens the round for whoever is up. Not persisted until the round
+  // completes, so quitting here leaves the session where it was.
+  useEffect(() => {
+    beginRound(makeRoundId(), new Date().toISOString());
+  }, [beginRound]);
 
   useEffect(() => {
     haptics.countdownTick();
@@ -41,7 +53,11 @@ export default function RoundIntroScreen() {
     return () => clearInterval(id);
   }, [haptics, router]);
 
-  const who = playerName ? `${playerName}, phone on your forehead` : 'Phone on your forehead';
+  const turn = session ? whoseTurn(session) : null;
+  const teamLabel = session && session.teams.length > 1 ? turn?.team.name : null;
+  const who = turn?.playerName
+    ? `${turn.playerName}, phone on your forehead`
+    : 'Phone on your forehead';
 
   return (
     <Pressable
@@ -53,6 +69,11 @@ export default function RoundIntroScreen() {
       accessibilityLabel={`${who}. Starting in ${count}. Tap to start now.`}
     >
       <View style={styles.body}>
+        {teamLabel ? (
+          <Text style={[styles.team, { color: turn?.team.color }]} allowFontScaling={false}>
+            {teamLabel.toUpperCase()}
+          </Text>
+        ) : null}
         <Text style={styles.who} allowFontScaling={false}>
           {who.toUpperCase()}
         </Text>
@@ -65,15 +86,13 @@ export default function RoundIntroScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: color.ink,
-  },
-  body: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: space.md,
+  screen: { flex: 1, backgroundColor: color.ink },
+  body: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: space.sm },
+  team: {
+    fontFamily: font.card,
+    fontSize: 22,
+    lineHeight: 26,
+    letterSpacing: 2,
   },
   who: {
     fontFamily: font.card,
@@ -85,8 +104,8 @@ const styles = StyleSheet.create({
   },
   count: {
     fontFamily: font.card,
-    fontSize: 120,
-    lineHeight: 128,
+    fontSize: 110,
+    lineHeight: 118,
     color: color.brand,
   },
 });

@@ -1,11 +1,14 @@
 import { useRouter } from 'expo-router';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
-import { countOutcomes } from '@/game/scoring';
+import { countOutcomes, scoreRound } from '@/game/scoring';
+import { whoseTurn } from '@/game/session';
 import type { Outcome } from '@/game/types';
-import { useRoundScreenMode } from '@/hooks/useRoundScreenMode';
+import { useDatabase } from '@/hooks/useDatabase';
 import { useHaptics } from '@/hooks/useHaptics';
-import { findPoolCard, useRoundStore } from '@/hooks/useRoundStore';
+import { useRoundScreenMode } from '@/hooks/useRoundScreenMode';
+import { findPoolCard, useSessionStore } from '@/hooks/useSessionStore';
+import { Button } from '@/ui/Button';
 import { EmptyState } from '@/ui/EmptyState';
 import { Screen } from '@/ui/Screen';
 import { Text } from '@/ui/Text';
@@ -16,38 +19,60 @@ import { color, radius, space } from '@/ui/tokens';
  *
  * Overrides matter because the holder is guessing blind and the group is
  * shouting: a mis-tap is normal, and arguing about it is worse than fixing it.
- * Score is derived from these results, so flipping one here is the whole edit.
+ * Score is derived from these results, so flipping one here is the whole edit —
+ * and nothing is written until Done, so the edits land in one go.
  */
 export default function RoundRecapScreen() {
   const router = useRouter();
+  const database = useDatabase();
   const haptics = useHaptics();
 
-  const results = useRoundStore((s) => s.state.results);
-  const reshuffled = useRoundStore((s) => s.state.reshuffled);
-  const pool = useRoundStore((s) => s.pool);
-  const overrideResult = useRoundStore((s) => s.overrideResult);
-  const reset = useRoundStore((s) => s.reset);
+  const session = useSessionStore((s) => s.session);
+  const results = useSessionStore((s) => s.roundState.results);
+  const reshuffled = useSessionStore((s) => s.roundState.reshuffled);
+  const pool = useSessionStore((s) => s.pool);
+  const overrideResult = useSessionStore((s) => s.overrideResult);
+  const commitRound = useSessionStore((s) => s.commitRound);
+
+  const [saving, setSaving] = useState(false);
 
   // Stays landscape: the phone is still sideways from the round.
   useRoundScreenMode({ landscape: true });
 
   const { correct, passed } = useMemo(() => countOutcomes(results), [results]);
+  const penalty = session?.settings.passPenalty ?? 0;
+  const score = useMemo(() => scoreRound(results, penalty), [results, penalty]);
 
-  const finish = () => {
-    reset();
-    router.dismissAll();
-    router.replace('/');
+  // The round is still open, so whoseTurn points at whoever just played.
+  const turn = session ? whoseTurn(session) : null;
+  const showTeam = (session?.teams.length ?? 0) > 1;
+
+  const done = async () => {
+    if (database.status !== 'ready' || saving) return;
+    setSaving(true);
+
+    try {
+      await commitRound(database.db, new Date().toISOString());
+      router.replace('/round/standings');
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
     <Screen>
       <View style={styles.header}>
+        {showTeam && turn ? (
+          <Text variant="caption" tone="faint" style={{ color: turn.team.color }}>
+            {turn.team.name.toUpperCase()}
+          </Text>
+        ) : null}
         <Text card variant="display">
-          {correct}
+          {score}
         </Text>
         <Text variant="body" tone="muted">
-          {correct === 1 ? '1 card' : `${correct} cards`} got, {passed}{' '}
-          {passed === 1 ? 'pass' : 'passes'}
+          {correct} got, {passed} {passed === 1 ? 'pass' : 'passes'}
+          {penalty > 0 && passed > 0 ? ` · passes cost ${passed}` : ''}
         </Text>
         {reshuffled ? (
           <Text variant="caption" tone="faint">
@@ -63,7 +88,7 @@ export default function RoundRecapScreen() {
         ListEmptyComponent={
           <EmptyState
             title="No cards this round"
-            body="The timer ran out before anything was answered. Have another go."
+            body="The timer ran out before anything was answered."
           />
         }
         renderItem={({ item }) => {
@@ -108,13 +133,12 @@ export default function RoundRecapScreen() {
       />
 
       <View style={styles.footer}>
-        <Pressable
-          onPress={finish}
-          accessibilityRole="button"
-          style={({ pressed }) => [styles.done, pressed && styles.donePressed]}
-        >
-          <Text variant="heading">Done</Text>
-        </Pressable>
+        <Button
+          label={saving ? 'Saving' : 'Done'}
+          variant="primary"
+          disabled={saving}
+          onPress={() => void done()}
+        />
       </View>
     </Screen>
   );
@@ -127,10 +151,7 @@ const styles = StyleSheet.create({
     paddingBottom: space.sm,
     gap: space.xs,
   },
-  list: {
-    paddingVertical: space.sm,
-    flexGrow: 1,
-  },
+  list: { paddingVertical: space.sm, flexGrow: 1 },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -138,30 +159,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: space.lg,
     paddingVertical: space.sm + 2,
   },
-  rowPressed: {
-    backgroundColor: color.surface,
-  },
-  marker: {
-    width: 6,
-    height: 36,
-    borderRadius: radius.sm,
-  },
-  rowBody: {
-    flex: 1,
-    gap: 2,
-  },
-  footer: {
-    paddingHorizontal: space.lg,
-    paddingBottom: space.md,
-  },
-  done: {
-    minHeight: 56,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: radius.md,
-    backgroundColor: color.surface,
-  },
-  donePressed: {
-    backgroundColor: color.surfaceRaised,
-  },
+  rowPressed: { backgroundColor: color.surface },
+  marker: { width: 6, height: 36, borderRadius: radius.sm },
+  rowBody: { flex: 1, gap: 2 },
+  footer: { paddingHorizontal: space.lg, paddingBottom: space.md },
 });

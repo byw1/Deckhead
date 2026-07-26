@@ -7,7 +7,7 @@ committed, with a check-in before the next one starts.
 |---|---|---|
 | M1 | Scaffold: Router, design tokens, deck schema, SQLite + migrations, five starter decks, deck browser and detail | Complete |
 | M2 | The round: card drawer, timer, tap input, haptics, state flashes, countdown, recap | Complete |
-| M3 | Sessions: teams, rotation, multi-round loop, win conditions, standings, resume | Not started |
+| M3 | Sessions: teams, rotation, multi-round loop, win conditions, standings, resume | Complete |
 | M4 | Custom decks: editor, bulk paste, duplicate, delete, reordering | Not started |
 | M5 | Sharing: export, QR, file import, deep links, preview and collision handling | Not started |
 | M6 | Polish: tilt mode, settings, accessibility, backgrounding, empty and error states | Not started |

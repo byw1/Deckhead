@@ -6,7 +6,7 @@ import type { Outcome } from '@/game/types';
 import { WARNING_SECONDS } from '@/game/types';
 import { useRoundScreenMode } from '@/hooks/useRoundScreenMode';
 import { useHaptics } from '@/hooks/useHaptics';
-import { useRoundStore } from '@/hooks/useRoundStore';
+import { useSessionStore } from '@/hooks/useSessionStore';
 import { useSettings } from '@/hooks/useSettings';
 import { CardFace } from '@/ui/CardFace';
 import { FlashOverlay } from '@/ui/FlashOverlay';
@@ -27,12 +27,12 @@ export default function RoundPlayScreen() {
   const settings = useSettings();
   const haptics = useHaptics();
 
-  const state = useRoundStore((s) => s.state);
-  const begin = useRoundStore((s) => s.begin);
-  const resolve = useRoundStore((s) => s.resolve);
-  const pauseRound = useRoundStore((s) => s.pause);
-  const resumeRound = useRoundStore((s) => s.resume);
-  const tick = useRoundStore((s) => s.tick);
+  const state = useSessionStore((s) => s.roundState);
+  const begin = useSessionStore((s) => s.start);
+  const resolve = useSessionStore((s) => s.resolve);
+  const pauseRound = useSessionStore((s) => s.pauseRound);
+  const resumeRound = useSessionStore((s) => s.resumeRound);
+  const tick = useSessionStore((s) => s.tick);
 
   const [now, setNow] = useState(() => Date.now());
   const [flash, setFlash] = useState<Outcome | null>(null);

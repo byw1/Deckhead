@@ -71,3 +71,52 @@ inherits Dynamic Type support for the accessibility pass in M6.
 
 Both are referenced through design tokens, so swapping either is a one-line
 change.
+
+## M3
+
+### Sessions are a JSON document, decks are normalised
+
+Opposite choices for opposite access patterns. A deck is queried across — card
+counts for every deck at once, search over card text, per-card reordering — so
+it is normalised into tables. A session is only ever read whole and written
+whole, and splitting teams, rounds and results apart would mean four joins to
+reassemble a few kilobytes of JSON.
+
+Because a session round-trips through JSON, every read is parsed and proved
+rather than cast, and a round containing one malformed result rejects the whole
+round. A partial recovery would silently change a score.
+
+### Rotation is derived, not stored
+
+Whose turn it is comes from the round count modulo the team count, not from a
+stored pointer. Same reasoning as score: a stored pointer is a second source of
+truth that can drift out of step with the round list. The one piece that is
+stored is `nextPlayerIndex` per team, because which player within a team is up
+cannot be derived from a round count alone once teams play different numbers of
+rounds.
+
+### An interrupted round is discarded, not scored
+
+Sessions are written at round completion, never at round start. If the app dies
+mid-round, that round is absent from the stored session and the team takes its
+turn again from the top.
+
+The alternative — saving continuously and resuming mid-round — means restoring a
+running timer, which is both harder and worse: nobody wants to come back to a
+game with eleven seconds left on a round they have lost the thread of. Because
+the cards a dropped round showed were never folded into `seenCardIds`, they
+return to the pool with no rollback needed.
+
+### Standings and final standings are one screen
+
+The difference between them is what the game asks you to do next, not what it
+shows you. The table stays put and only the footer changes, so the score does
+not appear to jump between two differently-laid-out screens at the moment
+people care about it most.
+
+### Just play is the default, and it is a team underneath
+
+The team path is opt-in. Plenty of groups do not want teams, and making them
+configure some before playing is the friction that gets a party app deleted.
+Underneath, "just play" is a single team named Everyone, so scoring, rotation
+and win conditions all have exactly one code path.
