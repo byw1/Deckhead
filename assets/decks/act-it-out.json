@@ -1,0 +1,267 @@
+{
+  "schemaVersion": 1,
+  "id": "dck_bb222cd4",
+  "name": "Act It Out",
+  "description": "Verbs and situations. Best played with the shouting turned up.",
+  "author": "Deckhead",
+  "language": "en",
+  "accentColor": "#7C5CFF",
+  "tags": [
+    "actions",
+    "charades"
+  ],
+  "createdAt": "2026-07-26T18:00:00Z",
+  "updatedAt": "2026-07-26T18:00:00Z",
+  "cards": [
+    {
+      "id": "crd_06ce77dd",
+      "text": "Parallel parking",
+      "note": null
+    },
+    {
+      "id": "crd_533114a2",
+      "text": "Losing your keys",
+      "note": null
+    },
+    {
+      "id": "crd_74d418eb",
+      "text": "Winning the lottery",
+      "note": null
+    },
+    {
+      "id": "crd_5005f77e",
+      "text": "Assembling flat-pack furniture",
+      "note": null
+    },
+    {
+      "id": "crd_3b547ac2",
+      "text": "Sneezing",
+      "note": null
+    },
+    {
+      "id": "crd_2631937e",
+      "text": "Running for a bus",
+      "note": null
+    },
+    {
+      "id": "crd_460c2b95",
+      "text": "Blowing out candles",
+      "note": null
+    },
+    {
+      "id": "crd_c8d9e755",
+      "text": "Stubbing your toe",
+      "note": null
+    },
+    {
+      "id": "crd_aeddadf9",
+      "text": "Taking a selfie",
+      "note": null
+    },
+    {
+      "id": "crd_8f273067",
+      "text": "Waking up late",
+      "note": null
+    },
+    {
+      "id": "crd_75227315",
+      "text": "Doing the washing up",
+      "note": null
+    },
+    {
+      "id": "crd_d5fae433",
+      "text": "Riding a horse",
+      "note": null
+    },
+    {
+      "id": "crd_17eff8be",
+      "text": "Getting a haircut",
+      "note": null
+    },
+    {
+      "id": "crd_bab62089",
+      "text": "Being tickled",
+      "note": null
+    },
+    {
+      "id": "crd_75f5b421",
+      "text": "Swatting a fly",
+      "note": null
+    },
+    {
+      "id": "crd_597932db",
+      "text": "Carrying too much shopping",
+      "note": null
+    },
+    {
+      "id": "crd_1ce36323",
+      "text": "Tying a shoelace",
+      "note": null
+    },
+    {
+      "id": "crd_35b3edb3",
+      "text": "Falling asleep in a meeting",
+      "note": null
+    },
+    {
+      "id": "crd_5ab642ff",
+      "text": "Opening a stuck jar",
+      "note": null
+    },
+    {
+      "id": "crd_b83d4544",
+      "text": "Queueing",
+      "note": null
+    },
+    {
+      "id": "crd_e5dc35a5",
+      "text": "Brushing your teeth",
+      "note": null
+    },
+    {
+      "id": "crd_56856507",
+      "text": "Juggling",
+      "note": null
+    },
+    {
+      "id": "crd_c99fef14",
+      "text": "Reversing a trailer",
+      "note": null
+    },
+    {
+      "id": "crd_27bfe2c1",
+      "text": "Eating something too hot",
+      "note": null
+    },
+    {
+      "id": "crd_4682877e",
+      "text": "Pretending to like a gift",
+      "note": null
+    },
+    {
+      "id": "crd_aea9b4fc",
+      "text": "Sneaking in late",
+      "note": null
+    },
+    {
+      "id": "crd_e64d3b3c",
+      "text": "Losing at cards",
+      "note": null
+    },
+    {
+      "id": "crd_aa27bb95",
+      "text": "Threading a needle",
+      "note": null
+    },
+    {
+      "id": "crd_2770c5bd",
+      "text": "Getting caught in the rain",
+      "note": null
+    },
+    {
+      "id": "crd_8cfe8844",
+      "text": "Cutting your own fringe",
+      "note": null
+    },
+    {
+      "id": "crd_c6214ce2",
+      "text": "Trying on shoes",
+      "note": null
+    },
+    {
+      "id": "crd_ceeeabd8",
+      "text": "Whistling",
+      "note": null
+    },
+    {
+      "id": "crd_c8179db1",
+      "text": "Arm wrestling",
+      "note": null
+    },
+    {
+      "id": "crd_bd5555da",
+      "text": "Doing a jigsaw",
+      "note": null
+    },
+    {
+      "id": "crd_8c12d599",
+      "text": "Chasing a runaway dog",
+      "note": null
+    },
+    {
+      "id": "crd_d4f4e512",
+      "text": "Applying sunscreen",
+      "note": null
+    },
+    {
+      "id": "crd_3f35cfd2",
+      "text": "Reading tiny print",
+      "note": null
+    },
+    {
+      "id": "crd_60bb8c3c",
+      "text": "Climbing a ladder",
+      "note": null
+    },
+    {
+      "id": "crd_e5529325",
+      "text": "Being stuck in a lift",
+      "note": null
+    },
+    {
+      "id": "crd_3ffb690e",
+      "text": "Blowing up a balloon",
+      "note": null
+    },
+    {
+      "id": "crd_8a82aaef",
+      "text": "Hailing a taxi",
+      "note": null
+    },
+    {
+      "id": "crd_5789bb86",
+      "text": "Skipping",
+      "note": null
+    },
+    {
+      "id": "crd_2ca6a7d9",
+      "text": "Wrapping a present badly",
+      "note": null
+    },
+    {
+      "id": "crd_dc392c9f",
+      "text": "Hiccupping",
+      "note": null
+    },
+    {
+      "id": "crd_1a289c1b",
+      "text": "Trying to open a door that says pull",
+      "note": null
+    },
+    {
+      "id": "crd_ae859266",
+      "text": "Untangling headphones",
+      "note": null
+    },
+    {
+      "id": "crd_350557e9",
+      "text": "Playing air guitar",
+      "note": null
+    },
+    {
+      "id": "crd_f89d4838",
+      "text": "Waiting for a kettle",
+      "note": null
+    },
+    {
+      "id": "crd_8863ad95",
+      "text": "Miming through a window",
+      "note": null
+    },
+    {
+      "id": "crd_3f7a992c",
+      "text": "Pretending to be asleep",
+      "note": null
+    }
+  ]
+}

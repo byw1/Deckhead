@@ -1,0 +1,267 @@
+{
+  "schemaVersion": 1,
+  "id": "dck_ee9c1331",
+  "name": "Animals",
+  "description": "From the obvious to the ones nobody can describe without flapping.",
+  "author": "Deckhead",
+  "language": "en",
+  "accentColor": "#2BD576",
+  "tags": [
+    "nature",
+    "easy"
+  ],
+  "createdAt": "2026-07-26T18:00:00Z",
+  "updatedAt": "2026-07-26T18:00:00Z",
+  "cards": [
+    {
+      "id": "crd_7facdd36",
+      "text": "Elephant",
+      "note": null
+    },
+    {
+      "id": "crd_508bf018",
+      "text": "Penguin",
+      "note": null
+    },
+    {
+      "id": "crd_1e7a860e",
+      "text": "Octopus",
+      "note": null
+    },
+    {
+      "id": "crd_fa4cf1f8",
+      "text": "Kangaroo",
+      "note": null
+    },
+    {
+      "id": "crd_4c38c232",
+      "text": "Sloth",
+      "note": null
+    },
+    {
+      "id": "crd_4821eb0a",
+      "text": "Flamingo",
+      "note": null
+    },
+    {
+      "id": "crd_8a474568",
+      "text": "Hedgehog",
+      "note": null
+    },
+    {
+      "id": "crd_18a1aede",
+      "text": "Giraffe",
+      "note": null
+    },
+    {
+      "id": "crd_11908afb",
+      "text": "Platypus",
+      "note": null
+    },
+    {
+      "id": "crd_61c0818f",
+      "text": "Jellyfish",
+      "note": null
+    },
+    {
+      "id": "crd_242da050",
+      "text": "Chameleon",
+      "note": null
+    },
+    {
+      "id": "crd_c4af234b",
+      "text": "Walrus",
+      "note": null
+    },
+    {
+      "id": "crd_9d3986ea",
+      "text": "Meerkat",
+      "note": null
+    },
+    {
+      "id": "crd_392fd9e6",
+      "text": "Porcupine",
+      "note": null
+    },
+    {
+      "id": "crd_cb0e6a70",
+      "text": "Otter",
+      "note": null
+    },
+    {
+      "id": "crd_dc2b7f47",
+      "text": "Rhinoceros",
+      "note": null
+    },
+    {
+      "id": "crd_26382aca",
+      "text": "Peacock",
+      "note": null
+    },
+    {
+      "id": "crd_d6c6e29b",
+      "text": "Armadillo",
+      "note": null
+    },
+    {
+      "id": "crd_6f91ead5",
+      "text": "Hippopotamus",
+      "note": null
+    },
+    {
+      "id": "crd_0dbab9fe",
+      "text": "Koala",
+      "note": null
+    },
+    {
+      "id": "crd_cd02db80",
+      "text": "Woodpecker",
+      "note": null
+    },
+    {
+      "id": "crd_c9f6658a",
+      "text": "Tarantula",
+      "note": null
+    },
+    {
+      "id": "crd_6a47a10c",
+      "text": "Seahorse",
+      "note": null
+    },
+    {
+      "id": "crd_3b34dcfa",
+      "text": "Ostrich",
+      "note": null
+    },
+    {
+      "id": "crd_4666aa57",
+      "text": "Panda",
+      "note": null
+    },
+    {
+      "id": "crd_62577865",
+      "text": "Crocodile",
+      "note": null
+    },
+    {
+      "id": "crd_be77cfcb",
+      "text": "Bat",
+      "note": null
+    },
+    {
+      "id": "crd_acb0bdcc",
+      "text": "Snail",
+      "note": null
+    },
+    {
+      "id": "crd_e9585315",
+      "text": "Camel",
+      "note": null
+    },
+    {
+      "id": "crd_e86791be",
+      "text": "Skunk",
+      "note": null
+    },
+    {
+      "id": "crd_19b768cc",
+      "text": "Lobster",
+      "note": null
+    },
+    {
+      "id": "crd_4b757f08",
+      "text": "Toucan",
+      "note": null
+    },
+    {
+      "id": "crd_7c6e5703",
+      "text": "Badger",
+      "note": null
+    },
+    {
+      "id": "crd_d201876c",
+      "text": "Squid",
+      "note": null
+    },
+    {
+      "id": "crd_8ff46c62",
+      "text": "Gorilla",
+      "note": null
+    },
+    {
+      "id": "crd_1c6a6df5",
+      "text": "Pelican",
+      "note": null
+    },
+    {
+      "id": "crd_f233c2e4",
+      "text": "Ferret",
+      "note": null
+    },
+    {
+      "id": "crd_338d6623",
+      "text": "Moose",
+      "note": null
+    },
+    {
+      "id": "crd_0b1f7e59",
+      "text": "Starfish",
+      "note": null
+    },
+    {
+      "id": "crd_37d04043",
+      "text": "Beaver",
+      "note": null
+    },
+    {
+      "id": "crd_9caf9463",
+      "text": "Vulture",
+      "note": null
+    },
+    {
+      "id": "crd_5031baa9",
+      "text": "Llama",
+      "note": null
+    },
+    {
+      "id": "crd_2008f9b8",
+      "text": "Racoon",
+      "note": null
+    },
+    {
+      "id": "crd_53ed2925",
+      "text": "Swan",
+      "note": null
+    },
+    {
+      "id": "crd_8f864892",
+      "text": "Cheetah",
+      "note": null
+    },
+    {
+      "id": "crd_57a6813a",
+      "text": "Hamster",
+      "note": null
+    },
+    {
+      "id": "crd_6a61ab2c",
+      "text": "Owl",
+      "note": null
+    },
+    {
+      "id": "crd_c84a6407",
+      "text": "Dolphin",
+      "note": null
+    },
+    {
+      "id": "crd_f1d0c65c",
+      "text": "Wombat",
+      "note": null
+    },
+    {
+      "id": "crd_729820bb",
+      "text": "Praying mantis",
+      "note": null
+    }
+  ]
+}

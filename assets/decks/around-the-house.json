@@ -1,0 +1,267 @@
+{
+  "schemaVersion": 1,
+  "id": "dck_ffde7880",
+  "name": "Around the House",
+  "description": "Ordinary objects, which turn out to be the hardest ones to describe.",
+  "author": "Deckhead",
+  "language": "en",
+  "accentColor": "#00B8D9",
+  "tags": [
+    "objects",
+    "easy"
+  ],
+  "createdAt": "2026-07-26T18:00:00Z",
+  "updatedAt": "2026-07-26T18:00:00Z",
+  "cards": [
+    {
+      "id": "crd_9846f929",
+      "text": "Kettle",
+      "note": null
+    },
+    {
+      "id": "crd_e8bdcc1e",
+      "text": "Doorbell",
+      "note": null
+    },
+    {
+      "id": "crd_53b78973",
+      "text": "Radiator",
+      "note": null
+    },
+    {
+      "id": "crd_765f0686",
+      "text": "Colander",
+      "note": null
+    },
+    {
+      "id": "crd_3cc48497",
+      "text": "Hairdryer",
+      "note": null
+    },
+    {
+      "id": "crd_fade728d",
+      "text": "Doormat",
+      "note": null
+    },
+    {
+      "id": "crd_a0c19460",
+      "text": "Tea towel",
+      "note": null
+    },
+    {
+      "id": "crd_55966687",
+      "text": "Bin bag",
+      "note": null
+    },
+    {
+      "id": "crd_4d13b5cf",
+      "text": "Coat hanger",
+      "note": null
+    },
+    {
+      "id": "crd_6e541148",
+      "text": "Plug socket",
+      "note": null
+    },
+    {
+      "id": "crd_1446f407",
+      "text": "Chest of drawers",
+      "note": null
+    },
+    {
+      "id": "crd_eac3e4e0",
+      "text": "Ironing board",
+      "note": null
+    },
+    {
+      "id": "crd_42449ba7",
+      "text": "Toaster",
+      "note": null
+    },
+    {
+      "id": "crd_1b303ee7",
+      "text": "Curtain rail",
+      "note": null
+    },
+    {
+      "id": "crd_8f4f3abf",
+      "text": "Bath plug",
+      "note": null
+    },
+    {
+      "id": "crd_179bb11f",
+      "text": "Corkscrew",
+      "note": null
+    },
+    {
+      "id": "crd_25267002",
+      "text": "Dustpan",
+      "note": null
+    },
+    {
+      "id": "crd_5111f181",
+      "text": "Fridge magnet",
+      "note": null
+    },
+    {
+      "id": "crd_e96427b4",
+      "text": "Letterbox",
+      "note": null
+    },
+    {
+      "id": "crd_e60d5d2d",
+      "text": "Extension lead",
+      "note": null
+    },
+    {
+      "id": "crd_ca4c7177",
+      "text": "Shoe rack",
+      "note": null
+    },
+    {
+      "id": "crd_9c8c8578",
+      "text": "Washing line",
+      "note": null
+    },
+    {
+      "id": "crd_da21c4fd",
+      "text": "Tape measure",
+      "note": null
+    },
+    {
+      "id": "crd_2519dd3d",
+      "text": "Spirit level",
+      "note": null
+    },
+    {
+      "id": "crd_a954d352",
+      "text": "Draught excluder",
+      "note": null
+    },
+    {
+      "id": "crd_bb7239f4",
+      "text": "Bedside lamp",
+      "note": null
+    },
+    {
+      "id": "crd_746eac6d",
+      "text": "Wardrobe",
+      "note": null
+    },
+    {
+      "id": "crd_fc07b075",
+      "text": "Loo roll holder",
+      "note": null
+    },
+    {
+      "id": "crd_af61ed2c",
+      "text": "Chopping board",
+      "note": null
+    },
+    {
+      "id": "crd_1c34c4e8",
+      "text": "Fire alarm",
+      "note": null
+    },
+    {
+      "id": "crd_415a2fb3",
+      "text": "Sofa cushion",
+      "note": null
+    },
+    {
+      "id": "crd_ae26420f",
+      "text": "Mirror",
+      "note": null
+    },
+    {
+      "id": "crd_57e2b64f",
+      "text": "Wheelie bin",
+      "note": null
+    },
+    {
+      "id": "crd_304efab5",
+      "text": "Stepladder",
+      "note": null
+    },
+    {
+      "id": "crd_b52b1eb5",
+      "text": "Watering can",
+      "note": null
+    },
+    {
+      "id": "crd_9186d48f",
+      "text": "Sellotape",
+      "note": null
+    },
+    {
+      "id": "crd_7f2fb82e",
+      "text": "Light switch",
+      "note": null
+    },
+    {
+      "id": "crd_c5cdf83f",
+      "text": "Oven glove",
+      "note": null
+    },
+    {
+      "id": "crd_ad00090f",
+      "text": "Egg cup",
+      "note": null
+    },
+    {
+      "id": "crd_4168ce80",
+      "text": "Bookshelf",
+      "note": null
+    },
+    {
+      "id": "crd_717fe598",
+      "text": "Vacuum cleaner",
+      "note": null
+    },
+    {
+      "id": "crd_292bb02e",
+      "text": "Picture frame",
+      "note": null
+    },
+    {
+      "id": "crd_794e04b2",
+      "text": "Blender",
+      "note": null
+    },
+    {
+      "id": "crd_539e7867",
+      "text": "Doorstop",
+      "note": null
+    },
+    {
+      "id": "crd_6b5114e2",
+      "text": "Peg",
+      "note": null
+    },
+    {
+      "id": "crd_0a2f6cdc",
+      "text": "Remote control",
+      "note": null
+    },
+    {
+      "id": "crd_befd435b",
+      "text": "Rolling pin",
+      "note": null
+    },
+    {
+      "id": "crd_b62f8f7f",
+      "text": "Shower curtain",
+      "note": null
+    },
+    {
+      "id": "crd_99f9e4c3",
+      "text": "Thermostat",
+      "note": null
+    },
+    {
+      "id": "crd_2af3f3b6",
+      "text": "Screwdriver",
+      "note": null
+    }
+  ]
+}
