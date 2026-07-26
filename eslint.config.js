@@ -8,6 +8,13 @@ module.exports = defineConfig([
     ignores: ['dist/*', 'node_modules/*', '.expo/*'],
   },
   {
+    // Build-time scripts run under Node, not in the app bundle.
+    files: ['spec/**/*.js', '*.config.js'],
+    languageOptions: {
+      globals: { __dirname: 'readonly', require: 'readonly', module: 'writable' },
+    },
+  },
+  {
     // SPEC hard rule: everything in /src/game is pure TypeScript. Scoring, round
     // resolution and win-condition evaluation must be unit-testable without a
     // renderer, so the boundary is enforced here rather than by discipline.
