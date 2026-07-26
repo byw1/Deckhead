@@ -6,7 +6,7 @@ committed, with a check-in before the next one starts.
 | Milestone | Scope | Status |
 |---|---|---|
 | M1 | Scaffold: Router, design tokens, deck schema, SQLite + migrations, five starter decks, deck browser and detail | Complete |
-| M2 | The round: card drawer, timer, tap input, haptics, state flashes, countdown, recap | Not started |
+| M2 | The round: card drawer, timer, tap input, haptics, state flashes, countdown, recap | Complete |
 | M3 | Sessions: teams, rotation, multi-round loop, win conditions, standings, resume | Not started |
 | M4 | Custom decks: editor, bulk paste, duplicate, delete, reordering | Not started |
 | M5 | Sharing: export, QR, file import, deep links, preview and collision handling | Not started |
@@ -32,12 +32,11 @@ being rediscovered as gaps.
 Decisions made during M1 that need revisiting when the milestone that depends on
 them arrives.
 
-- **react-native-mmkv** is not installed yet. v4 is a Nitro module and does not
-  run in Expo Go, which would force a development build for every review of
-  M1–M2. It is not needed until session resume in M3. When M3 lands, either
-  accept the development build (needed before shipping anyway) or use
-  `expo-sqlite/kv-store`, which fills the same synchronous key-value role with
-  no extra native dependency.
+- **react-native-mmkv is not used.** v4 is a Nitro module and does not run in
+  Expo Go, which would force a development build for every review. Settings now
+  use `expo-sqlite/kv-store` instead — the same synchronous key-value role with
+  no extra native dependency. Revisit only if a profile shows kv-store is too
+  slow for session autosave in M3.
 - **Card id regeneration on duplicate.** Card ids are stable and never
   regenerated on edit, so a duplicated deck would otherwise share ids with its
   source and corrupt seen-card tracking in a session containing both. Duplicate
