@@ -120,3 +120,35 @@ The team path is opt-in. Plenty of groups do not want teams, and making them
 configure some before playing is the friction that gets a party app deleted.
 Underneath, "just play" is a single team named Everyone, so scoring, rotation
 and win conditions all have exactly one code path.
+
+## M4
+
+### Bundled decks are read-only, and duplicate-to-edit is the way in
+
+A bundled deck cannot be edited or deleted. Making them editable would mean
+either abandoning re-seeding — so content fixes never reach existing installs —
+or letting an app update overwrite someone's changes. Neither is acceptable
+against the rule that nothing the user creates can be lost.
+
+Duplicating gives an editable copy with fresh ids, and the deck detail screen
+says why in one line rather than presenting a disabled Edit button.
+
+### Reordering is up and down, not drag
+
+Explicit buttons rather than a drag handle. Dragging needs gesture handler and
+reanimated wired into a list, is fiddly with the keyboard open, and is close to
+unusable under VoiceOver. Up and down are boring, reliable, and each one is a
+labelled control a screen reader can announce. Worth revisiting in M6 if
+reordering long decks turns out to be common, which is doubtful — most decks
+are pasted in the order people already wanted.
+
+### Bulk paste splits on newlines only
+
+One card per line, with an optional hint after a pipe. Commas and dashes stay
+literal: "Earth, Wind & Fire" and "Spider-Man" are real card text, and treating
+either as a separator would quietly mangle exactly the sort of content people
+paste. The pipe is rare enough in card text to be safe and is the only way to
+get notes in without a second editing pass.
+
+Duplicates are reported rather than silently added or silently dropped — pasting
+a list twice is a common accident, and the count tells you it happened.

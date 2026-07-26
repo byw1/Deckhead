@@ -1,9 +1,12 @@
-import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Pressable, StyleSheet, View } from 'react-native';
+import { Stack, useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { ActivityIndicator, Alert, FlatList, Pressable, StyleSheet, View } from 'react-native';
+import { duplicateDeck } from '@/decks/edit';
 import { isPlayable, MIN_PLAYABLE_CARDS, type StoredDeck } from '@/decks/types';
 import { useDatabase } from '@/hooks/useDatabase';
-import { getDeck } from '@/storage/deckRepo';
+import { useHaptics } from '@/hooks/useHaptics';
+import { deleteDeck, getDeck, upsertDeck } from '@/storage/deckRepo';
+import { Button } from '@/ui/Button';
 import { readableTextOn } from '@/ui/contrast';
 import { EmptyState } from '@/ui/EmptyState';
 import { Screen } from '@/ui/Screen';
@@ -19,24 +22,29 @@ export default function DeckDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const database = useDatabase();
+  const haptics = useHaptics();
   const [state, setState] = useState<LoadState>({ status: 'loading' });
+  const [busy, setBusy] = useState(false);
 
-  useEffect(() => {
-    if (database.status !== 'ready' || !id) return;
+  // Reloads on focus so returning from the editor shows the saved deck.
+  useFocusEffect(
+    useCallback(() => {
+      if (database.status !== 'ready' || !id) return;
 
-    let cancelled = false;
-    const { db } = database;
+      let cancelled = false;
+      const { db } = database;
 
-    void (async () => {
-      const deck = await getDeck(db, id);
-      if (cancelled) return;
-      setState(deck ? { status: 'ready', deck } : { status: 'missing' });
-    })();
+      void (async () => {
+        const deck = await getDeck(db, id);
+        if (cancelled) return;
+        setState(deck ? { status: 'ready', deck } : { status: 'missing' });
+      })();
 
-    return () => {
-      cancelled = true;
-    };
-  }, [database, id]);
+      return () => {
+        cancelled = true;
+      };
+    }, [database, id]),
+  );
 
   if (state.status === 'loading') {
     return (
@@ -64,6 +72,47 @@ export default function DeckDetailScreen() {
   const { deck } = state;
   const accentText = readableTextOn(deck.accentColor);
   const playable = isPlayable(deck);
+  const bundled = deck.source === 'bundled';
+
+  /**
+   * Duplicating mints fresh card ids, which is what lets a bundled deck be
+   * customised without the copy and the original marking each other's cards as
+   * seen in a session holding both.
+   */
+  const duplicate = async () => {
+    if (database.status !== 'ready' || busy) return;
+    setBusy(true);
+
+    try {
+      const copy = duplicateDeck(deck, new Date().toISOString());
+      await upsertDeck(database.db, copy, 'custom');
+      haptics.select();
+      router.replace(`/decks/${copy.id}`);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const confirmDelete = () => {
+    Alert.alert(
+      `Delete ${deck.name}?`,
+      `${deck.cards.length} ${deck.cards.length === 1 ? 'card' : 'cards'} will go with it. This cannot be undone.`,
+      [
+        { text: 'Keep', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            if (database.status !== 'ready') return;
+            void (async () => {
+              await deleteDeck(database.db, deck.id);
+              router.replace('/decks');
+            })();
+          },
+        },
+      ],
+    );
+  };
 
   return (
     <Screen edges={['top']}>
@@ -125,6 +174,37 @@ export default function DeckDetailScreen() {
         )}
         ListEmptyComponent={
           <EmptyState title="This deck is empty" body="There are no cards in it yet." />
+        }
+        ListFooterComponent={
+          <View style={styles.actions}>
+            {/* Bundled decks are read-only. Duplicating gives you an editable
+                copy, which is better than letting an app update overwrite the
+                changes you made to one. */}
+            {bundled ? (
+              <>
+                <Button
+                  label={busy ? 'Copying' : 'Duplicate to edit'}
+                  disabled={busy}
+                  onPress={() => void duplicate()}
+                  accessibilityHint="Makes an editable copy of this deck"
+                />
+                <Text variant="caption" tone="faint" style={styles.actionNote}>
+                  Decks that come with Deckhead cannot be changed, so updates never overwrite your
+                  work.
+                </Text>
+              </>
+            ) : (
+              <>
+                <Button label="Edit" onPress={() => router.push(`/decks/edit/${deck.id}`)} />
+                <Button
+                  label={busy ? 'Copying' : 'Duplicate'}
+                  disabled={busy}
+                  onPress={() => void duplicate()}
+                />
+                <Button label="Delete" onPress={confirmDelete} />
+              </>
+            )}
+          </View>
         }
       />
     </Screen>
@@ -193,6 +273,14 @@ const styles = StyleSheet.create({
   list: {
     paddingBottom: space.xxl,
     flexGrow: 1,
+  },
+  actions: {
+    gap: space.sm,
+    paddingHorizontal: space.lg,
+    paddingTop: space.lg,
+  },
+  actionNote: {
+    paddingTop: space.xs,
   },
   cardRow: {
     flexDirection: 'row',

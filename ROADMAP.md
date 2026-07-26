@@ -37,17 +37,15 @@ them arrives.
   use `expo-sqlite/kv-store` instead — the same synchronous key-value role with
   no extra native dependency. Revisit only if a profile shows kv-store is too
   slow for session autosave in M3.
-- **Card id regeneration on duplicate.** Card ids are stable and never
-  regenerated on edit, so a duplicated deck would otherwise share ids with its
-  source and corrupt seen-card tracking in a session containing both. Duplicate
-  and import-as-copy must mint new card ids. See `src/decks/README.md`.
+- **Card id regeneration on duplicate — done.** Duplicating a deck mints fresh
+  card ids, so a copy and its original cannot mark each other's cards as seen.
+  See `duplicateDeck` in `src/decks/edit.ts`. Import-as-copy in M5 must use the
+  same function.
 - **base64url for deep links.** The export payload is base64url-encoded, not
   standard base64, because `+` and `/` are not URL-safe in the
   `deckhead://deck?d=<payload>` link. Relevant in M5.
-- **Custom deck empty state.** The browser hides the "Yours" section when there
-  are no custom decks. The spec wants an empty state that invites rather than
-  apologises, but the thing it should invite you to — the deck editor — does not
-  exist until M4. The invitation ships with the editor it points at.
+- **Custom deck empty state — done.** The browser now always shows a "Yours"
+  section, with an invitation when it is empty and a New deck button below it.
 - **Accent colour and the state flash.** A user-chosen `accentColor` close to
   the correct or pass colour would stop the full-screen flash reading, which is
   the signature element. The M4 editor should warn on that, using perceptual

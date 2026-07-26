@@ -4,6 +4,7 @@ import { ActivityIndicator, SectionList, StyleSheet, View } from 'react-native';
 import type { DeckSummary } from '@/decks/types';
 import { useDatabase } from '@/hooks/useDatabase';
 import { listDeckSummaries, searchDeckSummaries } from '@/storage/deckRepo';
+import { Button } from '@/ui/Button';
 import { DeckCard } from '@/ui/DeckCard';
 import { EmptyState } from '@/ui/EmptyState';
 import { Screen } from '@/ui/Screen';
@@ -47,7 +48,8 @@ export default function DecksScreen() {
 
     return [
       ...(bundled.length ? [{ title: 'Included', data: bundled }] : []),
-      ...(custom.length ? [{ title: 'Yours', data: custom }] : []),
+      // Shown even when empty, so the invitation to make one has a home.
+      { title: 'Yours', data: custom },
     ];
   }, [decks]);
 
@@ -87,6 +89,13 @@ export default function DecksScreen() {
             {section.title.toUpperCase()}
           </Text>
         )}
+        renderSectionFooter={({ section }) =>
+          section.title === 'Yours' && section.data.length === 0 && !query.trim() ? (
+            <Text variant="caption" tone="muted" style={styles.invitation}>
+              Make a deck of inside jokes, or anything else your friends would shout at each other.
+            </Text>
+          ) : null
+        }
         stickySectionHeadersEnabled={false}
         contentContainerStyle={styles.list}
         keyboardDismissMode="on-drag"
@@ -101,6 +110,14 @@ export default function DecksScreen() {
           />
         }
       />
+
+      <View style={styles.footer}>
+        <Button
+          label="New deck"
+          variant="primary"
+          onPress={() => router.push('/decks/edit/new')}
+        />
+      </View>
     </Screen>
   );
 }
@@ -124,6 +141,15 @@ const styles = StyleSheet.create({
   list: {
     paddingVertical: space.sm,
     flexGrow: 1,
+  },
+  invitation: {
+    paddingHorizontal: space.lg,
+    paddingTop: space.xs,
+    paddingBottom: space.md,
+  },
+  footer: {
+    paddingHorizontal: space.lg,
+    paddingBottom: space.md,
   },
   sectionHeader: {
     paddingHorizontal: space.lg,
