@@ -5,7 +5,7 @@ committed, with a check-in before the next one starts.
 
 | Milestone | Scope | Status |
 |---|---|---|
-| M1 | Scaffold: Router, design tokens, deck schema, SQLite + migrations, five starter decks, deck browser and detail | In progress |
+| M1 | Scaffold: Router, design tokens, deck schema, SQLite + migrations, five starter decks, deck browser and detail | Complete |
 | M2 | The round: card drawer, timer, tap input, haptics, state flashes, countdown, recap | Not started |
 | M3 | Sessions: teams, rotation, multi-round loop, win conditions, standings, resume | Not started |
 | M4 | Custom decks: editor, bulk paste, duplicate, delete, reordering | Not started |
@@ -45,5 +45,13 @@ them arrives.
 - **base64url for deep links.** The export payload is base64url-encoded, not
   standard base64, because `+` and `/` are not URL-safe in the
   `deckhead://deck?d=<payload>` link. Relevant in M5.
-- **Accent colour contrast.** A user-chosen `accentColor` can land too light for
-  bone-coloured card text. The M4 editor should warn on low contrast.
+- **Custom deck empty state.** The browser hides the "Yours" section when there
+  are no custom decks. The spec wants an empty state that invites rather than
+  apologises, but the thing it should invite you to — the deck editor — does not
+  exist until M4. The invitation ships with the editor it points at.
+- **Accent colour and the state flash.** A user-chosen `accentColor` close to
+  the correct or pass colour would stop the full-screen flash reading, which is
+  the signature element. The M4 editor should warn on that, using perceptual
+  colour distance. This replaces an earlier concern about accent colour clashing
+  with card text, which turned out not to be possible — see
+  `src/ui/contrast.ts`.
