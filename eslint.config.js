@@ -26,6 +26,12 @@ module.exports = defineConfig([
           paths: [
             { name: 'react', message: '/src/game must stay pure TypeScript. No React.' },
             { name: 'react-native', message: '/src/game must stay pure TypeScript. No React Native.' },
+            {
+              name: 'zustand',
+              // zustand/vanilla is pure, but the default entry pulls in React
+              // via useSyncExternalStore. Stores live in /src/hooks.
+              message: '/src/game holds rules, not state containers. Put the store in /src/hooks.',
+            },
           ],
           patterns: [
             {

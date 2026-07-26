@@ -19,20 +19,33 @@ export default function HomeScreen() {
       </View>
 
       <View style={styles.actions}>
+        <PrimaryAction label="New round" onPress={() => router.push('/play/setup')} emphasis />
         <PrimaryAction label="Decks" onPress={() => router.push('/decks')} />
-        {/* New game arrives with the round in M2 and sessions in M3. A button
-            that opens nothing is worse than no button. */}
+        {/* Teams, win conditions and the multi-round loop arrive in M3, at
+            which point this becomes "New game". */}
       </View>
     </Screen>
   );
 }
 
-function PrimaryAction({ label, onPress }: { label: string; onPress: () => void }) {
+function PrimaryAction({
+  label,
+  onPress,
+  emphasis = false,
+}: {
+  label: string;
+  onPress: () => void;
+  emphasis?: boolean;
+}) {
   return (
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
-      style={({ pressed }) => [styles.action, pressed && styles.actionPressed]}
+      style={({ pressed }) => [
+        styles.action,
+        emphasis && styles.actionEmphasis,
+        pressed && (emphasis ? styles.actionEmphasisPressed : styles.actionPressed),
+      ]}
     >
       <Text variant="heading">{label}</Text>
     </Pressable>
@@ -66,5 +79,12 @@ const styles = StyleSheet.create({
   },
   actionPressed: {
     backgroundColor: color.surfaceRaised,
+  },
+  actionEmphasis: {
+    backgroundColor: color.brand,
+  },
+  actionEmphasisPressed: {
+    backgroundColor: color.brand,
+    opacity: 0.85,
   },
 });
