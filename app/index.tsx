@@ -91,6 +91,7 @@ export default function HomeScreen() {
           onPress={newGame}
         />
         <Button label="Decks" onPress={() => router.push('/decks')} />
+        <Button label="Settings" onPress={() => router.push('/settings')} />
       </View>
     </Screen>
   );

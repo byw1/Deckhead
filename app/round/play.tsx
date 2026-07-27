@@ -4,9 +4,11 @@ import { AppState, Pressable, StyleSheet, Text, View } from 'react-native';
 import { remainingMs } from '@/game/round';
 import type { Outcome } from '@/game/types';
 import { WARNING_SECONDS } from '@/game/types';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useRoundScreenMode } from '@/hooks/useRoundScreenMode';
 import { useHaptics } from '@/hooks/useHaptics';
 import { useSessionStore } from '@/hooks/useSessionStore';
+import { useTiltInput } from '@/hooks/useTiltInput';
 import { useSettings } from '@/hooks/useSettings';
 import { CardFace } from '@/ui/CardFace';
 import { FlashOverlay } from '@/ui/FlashOverlay';
@@ -26,6 +28,7 @@ export default function RoundPlayScreen() {
   const router = useRouter();
   const settings = useSettings();
   const haptics = useHaptics();
+  const reducedMotion = useReducedMotion();
 
   const state = useSessionStore((s) => s.roundState);
   const begin = useSessionStore((s) => s.start);
@@ -98,10 +101,22 @@ export default function RoundPlayScreen() {
 
       resolve(outcome, Date.now());
       setFlash(outcome);
-      setTimeout(() => setFlash(null), flashMs);
+
+      // With reduced motion the flash holds longer rather than snapping in and
+      // out. It carries the result, so it cannot just be dropped.
+      setTimeout(() => setFlash(null), reducedMotion ? flashMs * 2 : flashMs);
     },
-    [haptics, resolve, state.phase],
+    [haptics, reducedMotion, resolve, state.phase],
   );
+
+  const tiltMode = settings.inputMode === 'tilt';
+
+  const tilt = useTiltInput({
+    enabled: tiltMode && state.phase === 'running',
+    onResolve,
+    // Keyed on the card, so one tilt can never resolve two of them.
+    resetKey: state.card ? `${state.card.deckId}/${state.card.cardId}` : 'none',
+  });
 
   if (state.phase === 'paused') {
     return (
@@ -132,7 +147,11 @@ export default function RoundPlayScreen() {
         )}
       </View>
 
-      {/* Half the screen each. The holder is aiming by position, not by sight. */}
+      {/*
+        Tap targets are half the screen each: the holder is aiming by position,
+        not by sight. They stay live in tilt mode too — tilt is an addition, and
+        a tilt that will not register must never leave the round unplayable.
+      */}
       <View style={styles.hitAreas} pointerEvents="box-none">
         <Pressable
           style={styles.hitArea}
@@ -147,6 +166,26 @@ export default function RoundPlayScreen() {
           accessibilityLabel="Pass"
         />
       </View>
+
+      {/*
+        The holder cannot see this. It is for the group, who otherwise end up
+        shouting "bring it back level" at someone with a phone on their face.
+      */}
+      {tiltMode && !tilt.armed && state.phase === 'running' ? (
+        <View style={styles.tiltHint} pointerEvents="none">
+          <Text style={styles.tiltHintText} allowFontScaling={false}>
+            LEVEL
+          </Text>
+        </View>
+      ) : null}
+
+      {tiltMode && !tilt.available ? (
+        <View style={styles.tiltHint} pointerEvents="none">
+          <Text style={styles.tiltHintText} allowFontScaling={false}>
+            TAP INSTEAD
+          </Text>
+        </View>
+      ) : null}
 
       {flash ? <FlashOverlay outcome={flash} /> : null}
 
@@ -196,6 +235,21 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 24,
     color: color.inkMuted,
+  },
+  tiltHint: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    paddingBottom: space.md,
+  },
+  tiltHintText: {
+    fontFamily: font.card,
+    fontSize: 18,
+    lineHeight: 22,
+    letterSpacing: 3,
+    color: 'rgba(0, 0, 0, 0.35)',
   },
   timeUp: {
     ...StyleSheet.absoluteFill,
