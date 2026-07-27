@@ -10,7 +10,7 @@ committed, with a check-in before the next one starts.
 | M3 | Sessions: teams, rotation, multi-round loop, win conditions, standings, resume | Complete |
 | M4 | Custom decks: editor, bulk paste, duplicate, delete, reordering | Not started |
 | M5 | Sharing: export, QR, file import, deep links, preview and collision handling | Complete |
-| M6 | Polish: tilt mode, settings, accessibility, backgrounding, empty and error states | Not started |
+| M6 | Polish: tilt mode, settings, accessibility, backgrounding, empty and error states | Complete |
 | M7 | Ship: EAS config, icons and splash, screenshots, privacy manifest, TestFlight | Not started |
 
 ## Not in v1
@@ -48,9 +48,11 @@ them arrives.
   is an M7 task and the one part of sharing that is not fully offline.
 - **Custom deck empty state — done.** The browser now always shows a "Yours"
   section, with an invitation when it is empty and a New deck button below it.
-- **Accent colour and the state flash.** A user-chosen `accentColor` close to
-  the correct or pass colour would stop the full-screen flash reading, which is
-  the signature element. The M4 editor should warn on that, using perceptual
-  colour distance. This replaces an earlier concern about accent colour clashing
-  with card text, which turned out not to be possible — see
-  `src/ui/contrast.ts`.
+- **Accent colour and the state flash — resolved by construction.** The deck
+  editor offers six fixed accent colours rather than a free colour picker, and
+  none of them is close to the correct or pass flash. A free picker would need
+  the perceptual-distance warning; a short list does not.
+- **Sound is a setting but plays nothing.** The toggle exists and persists, and
+  sound is off by default for the reason the spec gives. No sounds are wired up,
+  because nothing in the game needs one that haptics do not already carry
+  better. Revisit only if play testing says otherwise.

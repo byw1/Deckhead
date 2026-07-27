@@ -150,10 +150,15 @@ export default function SettingsScreen() {
             <Button label="Reset settings" onPress={confirmReset} />
             <Button
               label="Delete my decks"
-              disabled={busy}
+              disabled={busy || database.status !== 'ready'}
               onPress={() => void confirmEraseCustomDecks()}
               accessibilityHint="Removes decks you made or imported. Bundled decks stay."
             />
+            {database.status === 'error' ? (
+              <Text variant="caption" tone="muted">
+                Your decks could not be opened, so they cannot be deleted from here.
+              </Text>
+            ) : null}
           </View>
         </View>
       </ScrollView>

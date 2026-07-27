@@ -216,6 +216,13 @@ export default function ImportDeckScreen() {
         <Chip label="File" selected={method === 'file'} onPress={() => setMethod('file')} />
       </View>
 
+      {database.status === 'error' ? (
+        <Text variant="body" tone="muted" style={styles.error}>
+          Deckhead could not open your decks, so there is nowhere to put an imported one.{' '}
+          {database.message}
+        </Text>
+      ) : null}
+
       {error ? (
         <Text variant="body" tone="muted" style={styles.error}>
           {error.message}

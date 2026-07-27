@@ -61,15 +61,23 @@ export default function RoundPlayScreen() {
 
   /**
    * An incoming call backgrounds the app. The timer pauses rather than running
-   * down while nobody can see the screen, and the round resumes on return.
+   * down while nobody can see the screen.
+   *
+   * Coming back does not restart it. The spec says to offer a resume, and it is
+   * right: returning to a running clock means the round is already going while
+   * the phone is still in front of someone's face. The paused screen waits for
+   * a tap.
+   *
+   * Pausing on 'inactive' as well as 'background' is deliberate. It fires for
+   * transient things like the notification shade, and a spurious pause costs a
+   * tap while a missed one costs the round.
    */
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (next) => {
-      if (next === 'active') resumeRound(Date.now());
-      else pauseRound(Date.now());
+      if (next !== 'active') pauseRound(Date.now());
     });
     return () => subscription.remove();
-  }, [pauseRound, resumeRound]);
+  }, [pauseRound]);
 
   const left = remainingMs(state, now);
 
@@ -120,12 +128,17 @@ export default function RoundPlayScreen() {
 
   if (state.phase === 'paused') {
     return (
-      <Pressable style={styles.paused} onPress={() => resumeRound(Date.now())}>
+      <Pressable
+        style={styles.paused}
+        onPress={() => resumeRound(Date.now())}
+        accessibilityRole="button"
+        accessibilityLabel={`Paused, ${Math.ceil(left / 1000)} seconds left. Tap to carry on.`}
+      >
         <Text style={styles.pausedTitle} allowFontScaling={false}>
           PAUSED
         </Text>
         <Text style={styles.pausedBody}>
-          {Math.ceil(left / 1000)} seconds left. Tap anywhere to carry on.
+          {Math.ceil(left / 1000)} seconds left. Phone back on your forehead, then tap anywhere.
         </Text>
       </Pressable>
     );

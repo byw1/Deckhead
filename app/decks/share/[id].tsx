@@ -59,6 +59,17 @@ export default function ShareDeckScreen() {
 
   const size: ShareSize | null = useMemo(() => (deck ? measure(deck) : null), [deck]);
 
+  if (database.status === 'error') {
+    return (
+      <Screen>
+        <EmptyState title="Deckhead could not open your decks" body={database.message} />
+        <View style={styles.footer}>
+          <Button label="Back" variant="primary" onPress={() => router.back()} />
+        </View>
+      </Screen>
+    );
+  }
+
   if (missing) {
     return (
       <Screen>

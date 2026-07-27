@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useAppFonts } from '@/hooks/useAppFonts';
 import { useDeckLinks } from '@/hooks/useDeckLinks';
+import { ErrorBoundary } from '@/ui/ErrorBoundary';
 import { color } from '@/ui/tokens';
 
 export default function RootLayout() {
@@ -18,12 +19,14 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <StatusBar style="light" />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: color.ink },
-        }}
-      />
+      <ErrorBoundary>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: color.ink },
+          }}
+        />
+      </ErrorBoundary>
     </SafeAreaProvider>
   );
 }

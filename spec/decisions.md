@@ -191,3 +191,42 @@ Saving an imported deck alongside one with the same id mints a fresh deck id and
 fresh card ids, using the same function as M4's duplicate. Keeping the card ids
 would make the two decks mark each other's cards as seen in a session holding
 both.
+
+## M6
+
+### Backgrounding pauses, and coming back does not un-pause
+
+The spec says to pause the timer and offer a resume, and that is right rather
+than merely cautious. Auto-resuming on return means the clock is already running
+while the phone is still in front of someone's face after a call.
+
+The app pauses on `inactive` as well as `background`. `inactive` fires for
+transient things like the notification shade, so this pauses more often than
+strictly necessary — a spurious pause costs one tap, a missed one costs the
+round.
+
+### Tapping stays live in tilt mode
+
+Tilt is an addition, not a replacement. A sensor that is missing, or a tilt
+threshold that a particular person cannot reach comfortably, must never leave a
+round unplayable. If the accelerometer is unavailable the round screen says to
+tap instead rather than failing silently.
+
+### Reduced motion holds the flash rather than removing it
+
+The full-screen correct/pass flash is how the group reads the result from across
+the room. It is information, not decoration, so reduced motion cannot simply
+drop it. It holds still and longer instead, which loses the jolt and keeps the
+meaning.
+
+### Line height scales with Dynamic Type
+
+React Native scales `fontSize` for Dynamic Type but leaves an explicit
+`lineHeight` untouched. The type scale defines both, so at large text sizes
+lines clipped into each other — for exactly the person who turned text size up.
+The shared Text component now scales line height by `PixelRatio.getFontScale()`,
+pinned by a test across the supported range.
+
+Card text and the countdown opt out of font scaling deliberately. They are
+already sized to fill the display, and Dynamic Type on top of an auto-fitted
+200pt face makes it smaller, not larger.
