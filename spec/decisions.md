@@ -152,3 +152,42 @@ get notes in without a second editing pass.
 
 Duplicates are reported rather than silently added or silently dropped — pasting
 a list twice is a common accident, and the count tells you it happened.
+
+## M5
+
+### The QR limit is 2.1KB, not the spec's 1.5KB
+
+The spec pairs a 1.5KB payload ceiling with a target of "most decks under ~150
+cards". Measured, those two do not agree. Card ids are random hex and do not
+compress, so every card costs about 11 bytes of payload whatever its text, and
+1.5KB runs out at 105 cards.
+
+The constraint behind 1.5KB also does not apply here. That figure protects
+legibility at distance, which is the card face's problem — a QR is scanned phone
+to phone at arm's length off a bright screen. At low error correction a version
+40 code holds about 2953 bytes, so 2.1KB lands near version 34 with real margin
+and delivers the ~150 cards the spec actually asked for.
+
+Low error correction for the same reason: the usual argument for higher levels
+is print damage, and this code lives on a screen for ten seconds. Spending
+capacity on recovery would mean a denser code for the same deck.
+
+### The payload carries its own version, separate from schemaVersion
+
+`D1.` prefixes every payload. The deck's `schemaVersion` answers "can this build
+read this deck"; the payload version answers "can this build read this
+envelope". A future change to compression or encoding must not be mistaken for a
+change to the deck shape, and vice versa.
+
+### Import is never silent, including from a deep link
+
+A payload from a QR, a file, a paste or a `deckhead://` link all land on the
+same preview with a confirm tap. A link is content someone else controls, so it
+gets no more trust than a pasted string.
+
+### Keeping both on a collision goes through duplicateDeck
+
+Saving an imported deck alongside one with the same id mints a fresh deck id and
+fresh card ids, using the same function as M4's duplicate. Keeping the card ids
+would make the two decks mark each other's cards as seen in a session holding
+both.

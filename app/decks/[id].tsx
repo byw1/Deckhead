@@ -182,6 +182,7 @@ export default function DeckDetailScreen() {
                 changes you made to one. */}
             {bundled ? (
               <>
+                <Button label="Share" onPress={() => router.push(`/decks/share/${deck.id}`)} />
                 <Button
                   label={busy ? 'Copying' : 'Duplicate to edit'}
                   disabled={busy}
@@ -195,6 +196,11 @@ export default function DeckDetailScreen() {
               </>
             ) : (
               <>
+                <Button
+                  label="Share"
+                  variant="primary"
+                  onPress={() => router.push(`/decks/share/${deck.id}`)}
+                />
                 <Button label="Edit" onPress={() => router.push(`/decks/edit/${deck.id}`)} />
                 <Button
                   label={busy ? 'Copying' : 'Duplicate'}

@@ -117,6 +117,7 @@ export default function DecksScreen() {
           variant="primary"
           onPress={() => router.push('/decks/edit/new')}
         />
+        <Button label="Import a deck" onPress={() => router.push('/decks/import')} />
       </View>
     </Screen>
   );
@@ -150,6 +151,7 @@ const styles = StyleSheet.create({
   footer: {
     paddingHorizontal: space.lg,
     paddingBottom: space.md,
+    gap: space.sm,
   },
   sectionHeader: {
     paddingHorizontal: space.lg,

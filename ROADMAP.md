@@ -9,7 +9,7 @@ committed, with a check-in before the next one starts.
 | M2 | The round: card drawer, timer, tap input, haptics, state flashes, countdown, recap | Complete |
 | M3 | Sessions: teams, rotation, multi-round loop, win conditions, standings, resume | Complete |
 | M4 | Custom decks: editor, bulk paste, duplicate, delete, reordering | Not started |
-| M5 | Sharing: export, QR, file import, deep links, preview and collision handling | Not started |
+| M5 | Sharing: export, QR, file import, deep links, preview and collision handling | Complete |
 | M6 | Polish: tilt mode, settings, accessibility, backgrounding, empty and error states | Not started |
 | M7 | Ship: EAS config, icons and splash, screenshots, privacy manifest, TestFlight | Not started |
 
@@ -41,9 +41,11 @@ them arrives.
   card ids, so a copy and its original cannot mark each other's cards as seen.
   See `duplicateDeck` in `src/decks/edit.ts`. Import-as-copy in M5 must use the
   same function.
-- **base64url for deep links.** The export payload is base64url-encoded, not
-  standard base64, because `+` and `/` are not URL-safe in the
-  `deckhead://deck?d=<payload>` link. Relevant in M5.
+- **base64url for deep links — done.** The export payload is base64url. Standard
+  base64 still decodes on the way in, so a payload pasted from elsewhere works.
+- **Universal links need a domain.** The `deckhead://` scheme works now. The
+  https equivalent needs a domain with an apple-app-site-association file, which
+  is an M7 task and the one part of sharing that is not fully offline.
 - **Custom deck empty state — done.** The browser now always shows a "Yours"
   section, with an invitation when it is empty and a New deck button below it.
 - **Accent colour and the state flash.** A user-chosen `accentColor` close to
