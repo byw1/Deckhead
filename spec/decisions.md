@@ -191,3 +191,60 @@ Saving an imported deck alongside one with the same id mints a fresh deck id and
 fresh card ids, using the same function as M4's duplicate. Keeping the card ids
 would make the two decks mark each other's cards as seen in a session holding
 both.
+
+## M6
+
+### Tilt replaces tap rather than joining it
+
+Turning tilt on removes the tap targets for the round. Keeping both sounds
+safer and is not: the phone is pressed against skin for the whole round, and
+the tap targets are half the screen each, so a stray palm would resolve cards
+nobody guessed. A mode is a mode.
+
+The exception is a device with no accelerometer, where `useTilt` reports
+unavailable and tap stays. Choosing tilt can never leave a round with no way to
+answer.
+
+### The tilt gesture is guarded three ways, not one
+
+The spec's brief for tilt is a threshold plus a return to neutral, because the
+incumbent's unreliable gyro controls are the complaint the product is aimed at.
+A threshold alone is not enough — an excited jerk crosses any angle you care to
+name. `src/game/tilt.ts` adds two more guards:
+
+- **A dwell.** The tilt must hold past the trigger for 120ms. A swing through
+  the angle does not resolve anything.
+- **A motion gate.** Samples whose magnitude strays more than 0.35g from 1g are
+  the phone being moved rather than held at an angle, and are dropped. Gravity
+  alone reads 1g; a jerk does not.
+
+A jerk fails both. Deliberately tipping the phone and holding it fails neither.
+
+The machine is pure and starts disarmed, so the trip up to a forehead — which
+passes through every angle — resolves nothing until the phone has been seen
+near upright once.
+
+### The screen-normal sign is the one line that needs a device
+
+Which way "down" reads on the accelerometer's z axis is a platform convention,
+and it is the only part of tilt that cannot be settled without hardware. It is
+isolated in `TILT_DOWN_SIGN` with the reasoning written out: on iOS a device
+lying screen-up reads z = -1, so a screen tipped toward the floor reads +1. If
+a real device ever reads inverted, that constant is the whole fix. Everything
+either side of it is unit-tested.
+
+### No sound toggle until there is sound
+
+The spec asks for a sound setting, off by default, with a line explaining why.
+The setting exists in `useSettings` and the settings screen does not show it,
+because nothing in the app plays audio yet — the control would be a switch
+wired to nothing, which is worse than no control. It ships with the sound it
+governs.
+
+### Input mode is an app setting, stamped into the session
+
+Round length, win condition and pass penalty are chosen per game. Input mode is
+not: it is a fact about the person holding the phone, and asking again every
+game is friction for a preference that never changes. It lives in app settings
+and the new game flow stamps the current value into `Session.settings.inputMode`
+at start, so a stored session still records what it was actually played with.

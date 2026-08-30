@@ -8,9 +8,9 @@ committed, with a check-in before the next one starts.
 | M1 | Scaffold: Router, design tokens, deck schema, SQLite + migrations, five starter decks, deck browser and detail | Complete |
 | M2 | The round: card drawer, timer, tap input, haptics, state flashes, countdown, recap | Complete |
 | M3 | Sessions: teams, rotation, multi-round loop, win conditions, standings, resume | Complete |
-| M4 | Custom decks: editor, bulk paste, duplicate, delete, reordering | Not started |
+| M4 | Custom decks: editor, bulk paste, duplicate, delete, reordering | Complete |
 | M5 | Sharing: export, QR, file import, deep links, preview and collision handling | Complete |
-| M6 | Polish: tilt mode, settings, accessibility, backgrounding, empty and error states | Not started |
+| M6 | Polish: tilt mode, settings, accessibility, backgrounding, empty and error states | In progress |
 | M7 | Ship: EAS config, icons and splash, screenshots, privacy manifest, TestFlight | Not started |
 
 ## Not in v1
@@ -50,7 +50,16 @@ them arrives.
   section, with an invitation when it is empty and a New deck button below it.
 - **Accent colour and the state flash.** A user-chosen `accentColor` close to
   the correct or pass colour would stop the full-screen flash reading, which is
-  the signature element. The M4 editor should warn on that, using perceptual
-  colour distance. This replaces an earlier concern about accent colour clashing
-  with card text, which turned out not to be possible — see
+  the signature element. This did not ship with M4 — the editor still lets any
+  accent through — so it carries into M6, and wants perceptual colour distance
+  rather than a contrast ratio. This replaces an earlier concern about accent
+  colour clashing with card text, which turned out not to be possible — see
   `src/ui/contrast.ts`.
+- **The tilt axis sign needs a real device.** Tilt is built and unit-tested, but
+  which way "down" reads on the accelerometer's z axis cannot be confirmed in a
+  simulator. It is isolated in `TILT_DOWN_SIGN` in `src/game/tilt.ts`; if a
+  device answers backwards, that constant is the whole fix. Check it before the
+  M7 TestFlight build.
+- **Sound has a setting but no sound.** `Settings.sound` persists and the
+  settings screen deliberately does not show it, because nothing plays audio
+  yet. The toggle ships with the audio it governs, not before.
