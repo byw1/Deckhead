@@ -6,6 +6,7 @@ import { whoseTurn } from '@/game/session';
 import { useHaptics } from '@/hooks/useHaptics';
 import { useRoundScreenMode } from '@/hooks/useRoundScreenMode';
 import { useSessionStore } from '@/hooks/useSessionStore';
+import { useSettings } from '@/hooks/useSettings';
 import { color, font, space } from '@/ui/tokens';
 
 const COUNT_FROM = 3;
@@ -24,6 +25,7 @@ export default function RoundIntroScreen() {
 
   const session = useSessionStore((s) => s.session);
   const beginRound = useSessionStore((s) => s.beginRound);
+  const settings = useSettings();
 
   const [count, setCount] = useState(COUNT_FROM);
 
@@ -80,6 +82,11 @@ export default function RoundIntroScreen() {
         <Text style={styles.count} allowFontScaling={false}>
           {count > 0 ? count : ''}
         </Text>
+        {/* The last moment anyone can read the screen, and the only place the
+            tilt directions fit — the round itself is the card and nothing else. */}
+        {settings.inputMode === 'tilt' ? (
+          <Text style={styles.hint}>Tilt down for got it, up for pass</Text>
+        ) : null}
       </View>
     </Pressable>
   );
@@ -107,5 +114,11 @@ const styles = StyleSheet.create({
     fontSize: 110,
     lineHeight: 118,
     color: color.brand,
+  },
+  hint: {
+    fontSize: 15,
+    lineHeight: 20,
+    color: color.inkMuted,
+    textAlign: 'center',
   },
 });

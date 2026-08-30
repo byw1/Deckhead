@@ -8,6 +8,7 @@ import { useRoundScreenMode } from '@/hooks/useRoundScreenMode';
 import { useHaptics } from '@/hooks/useHaptics';
 import { useSessionStore } from '@/hooks/useSessionStore';
 import { useSettings } from '@/hooks/useSettings';
+import { useTilt } from '@/hooks/useTilt';
 import { CardFace } from '@/ui/CardFace';
 import { FlashOverlay } from '@/ui/FlashOverlay';
 import { TimerBar } from '@/ui/TimerBar';
@@ -103,6 +104,21 @@ export default function RoundPlayScreen() {
     [haptics, resolve, state.phase],
   );
 
+  /**
+   * Tilt replaces tap rather than joining it. The phone is pressed against skin
+   * for the whole round, so leaving full-screen tap targets live underneath a
+   * tilt game is a stray palm away from resolving a card nobody guessed.
+   *
+   * A device with no accelerometer keeps tap, so choosing tilt can never leave
+   * a round with no way to answer.
+   */
+  const tiltChosen = settings.inputMode === 'tilt';
+  const { available: tiltAvailable } = useTilt({
+    enabled: tiltChosen && state.phase === 'running',
+    onGesture: onResolve,
+  });
+  const tilting = tiltChosen && tiltAvailable;
+
   if (state.phase === 'paused') {
     return (
       <Pressable style={styles.paused} onPress={() => resumeRound(Date.now())}>
@@ -133,20 +149,22 @@ export default function RoundPlayScreen() {
       </View>
 
       {/* Half the screen each. The holder is aiming by position, not by sight. */}
-      <View style={styles.hitAreas} pointerEvents="box-none">
-        <Pressable
-          style={styles.hitArea}
-          onPress={() => onResolve('correct')}
-          accessibilityRole="button"
-          accessibilityLabel="Got it"
-        />
-        <Pressable
-          style={styles.hitArea}
-          onPress={() => onResolve('pass')}
-          accessibilityRole="button"
-          accessibilityLabel="Pass"
-        />
-      </View>
+      {tilting ? null : (
+        <View style={styles.hitAreas} pointerEvents="box-none">
+          <Pressable
+            style={styles.hitArea}
+            onPress={() => onResolve('correct')}
+            accessibilityRole="button"
+            accessibilityLabel="Got it"
+          />
+          <Pressable
+            style={styles.hitArea}
+            onPress={() => onResolve('pass')}
+            accessibilityRole="button"
+            accessibilityLabel="Pass"
+          />
+        </View>
+      )}
 
       {flash ? <FlashOverlay outcome={flash} /> : null}
 
