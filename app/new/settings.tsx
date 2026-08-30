@@ -7,6 +7,7 @@ import { useDatabase } from '@/hooks/useDatabase';
 import { useHaptics } from '@/hooks/useHaptics';
 import { useNewGameStore } from '@/hooks/useNewGameStore';
 import { useSessionStore } from '@/hooks/useSessionStore';
+import { useSettings } from '@/hooks/useSettings';
 import { getDeck } from '@/storage/deckRepo';
 import { discardOtherUnfinishedSessions, saveSession } from '@/storage/sessionRepo';
 import { Button } from '@/ui/Button';
@@ -40,6 +41,7 @@ export default function NewGameSettingsScreen() {
   const resetDraft = useNewGameStore((s) => s.reset);
 
   const startSession = useSessionStore((s) => s.startSession);
+  const appSettings = useSettings();
   const [starting, setStarting] = useState(false);
 
   const start = async () => {
@@ -56,7 +58,10 @@ export default function NewGameSettingsScreen() {
         id: makeSessionId(),
         decks,
         teams: resolvedTeams(),
-        settings,
+        // Input mode is a preference about the person holding the phone, not
+        // about this game, so it is set once in app settings. Stamped in here
+        // so the stored session records what it was actually played with.
+        settings: { ...settings, inputMode: appSettings.inputMode },
         now: new Date().toISOString(),
         seed: Date.now() >>> 0,
       });
